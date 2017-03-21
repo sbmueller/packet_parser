@@ -1,0 +1,70 @@
+What follows is the definition for a toy protocol.  I wanted to use
+a real world example, but the more I considered various protocols the
+more frustrated I grew with how long it would take to either implement
+or test solutions.  What results was a compromise that should require 
+a bit of work, but nothing so long that it's discouraging.
+
+    0       1       2       3       4       5       6       7
++-------+-------+-------+-------+-------+-------+-------+-------+
+|       |       |       |       |       |       |       |       |
+|  hdr1 |  hdr2 |  src     src     src     src  |  dst     dst  |
+|alwys Z| Y or Z|        network order          | network order |
+| 8-bit | 8-bit |            32-bit             |    32-bit     |
+|       |       |       |       |       |       |       |       |
++-------+-------+-------+-------+-------+-------+-------+-------+
+|       |       |       |       |       |       |       |       |
+|  dst     dst  |  crc     crc     crc     crc  | flags |  len  |
+| network order | CRC-32 (ANSI, Ethernet, etc.) |       |       |
+|  32-bit cont  |            32-bit             | 8-bit | 8-bit |
+|       |       |       |       |       |       |       |       |
++-------+-------+-------+-------+-------+-------+-------+-------+
+|       |       |
+|  payload
+|
+|  0 to 2040 bits ...
+|       |
++-------+-- -
+
+
+flags
+
+    0       1       2       3       4       5       6       7
++-------+-------+-------+-------+-------+-------+-------+-------+
+|       |       |       |       |       |       |       |       |
+| rsrvd | rsvrd | rsvrd |unknown| reset |urgent |  ack  |  ack  |
+|       |       |       |       |       |  msg  | rqstd |       |
+|       |       |       |       |       |       |       |       |
+| 1-bit | 1-bit | 1-bit | 1-bit | 1-bit | 1-bit | 1-bit | 1-bit |
+|       |       |       |       |       |       |       |       |
++-------+-------+-------+-------+-------+-------+-------+-------+
+
+Because we don't have a pcap format or anything of the sort for this
+made up protocol, I've generated some test data and then converted
+that to hex to simulate what is returned from a read off of a device.
+
+The test file shows a (completely fake) conversation between the 
+hosts AA:BB:CC:DD and 11:22:33:44.
+
+I would like a program that lets me "grep" these packets in at least
+the following two ways (though extra options are appreciated):
+
+1) print just the payload of all *VALID* messages with the urgent flag
+2) display the full packet for ALL messages with the unknown flag and
+   a payload length of at least 10.
+
+Additionally I would like to have:
+
+3) some sort of "pretty print" breakout option for each of the fields
+
+I will be paying attention to how you access the data as well as
+looking at how you solve (intentionally) ambiguous cases.  If it can't
+be derived from the sample data, feel free to make assumptions and 
+document why you made them.  (You can also ask questions if you're 
+unsure.)
+
+I'll be testing this on Linux and would like a solution in C or C++.  
+Bonus points if it's a library and can also work in Python.  Super
+extra bonus points if you figure out what the payload is.  (Note:
+don't waste too much time there.)
+
+Please also provide a simple Makefile.
