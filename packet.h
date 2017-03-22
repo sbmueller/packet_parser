@@ -21,6 +21,7 @@ private:
 
 public:
   packet(std::string& data);
+  std::string raw_packet;
   struct {
     unsigned int hdr1 : 8;
     unsigned int hdr2 : 8;

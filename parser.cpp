@@ -29,11 +29,10 @@ parser::print_urgent_payload() {
   for (int p = 0; p < d_packets.size(); ++p) {
     // packet is urgent and valid and has payload
     if(d_packets[p].valid && d_packets[p].payload.size() > 0 && d_packets[p].urgent()) { // pick 3rd LSB
-      std::cout << std::dec << "----------------------------- Packet " << p+1 << " ---------------------------" << std::endl;
       for (int h = 0; h < d_packets[p].payload.size(); ++h) {
         std::cout << std::uppercase << std::hex << static_cast<unsigned int>(d_packets[p].payload[h]);
       }
-      std::cout << std::endl << std::endl;
+      std::cout << std::endl;
     }
   }
 }
@@ -46,7 +45,7 @@ parser::print_lengthy_packets() {
   for (int p = 0; p < d_packets.size(); ++p) {
     // packet has payload of length >= 10 and has Unknown flag set
     if(d_packets[p].payload.size() >= 10 && d_packets[p].unknown()) { // pick 5th LSB
-      pretty_print(p);
+      std::cout << d_packets[p].raw_packet << std::endl;
     }
   }
 }

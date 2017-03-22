@@ -5,6 +5,7 @@
 
 packet::packet(std::string &data) {
   // check if packet is at least long enough for header
+  raw_packet = data;
   if(check_header(data)) {
     header.hdr1 = hex2int(data.substr(0, 2));
     header.hdr2 = hex2int(data.substr(2, 2));
@@ -74,7 +75,7 @@ packet::set_payload(std::string data) {
   }
   std::string fresh_payload = data.substr(HDR_LEN, data.size()-HDR_LEN);
   // compare desired len in bytes with actual len in 4-bit
-  if(header.len*2 != fresh_payload.size()) {
+  if(header.len*2 != fresh_payload.size() && fresh_payload.size() > 510) {
     valid = false;
   }
   // fill payload vector with data
