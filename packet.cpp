@@ -96,3 +96,17 @@ bool
 packet::urgent() {
   return (header.flags & 4) == 4;
 }
+
+bool
+packet::ack() {
+  return (header.flags & 1) == 1;
+}
+
+bool
+packet::ack_rqst() {
+  return (header.flags & 2) == 2;
+}
+bool
+packet::reset() {
+  return (header.flags & 8) == 8;
+}

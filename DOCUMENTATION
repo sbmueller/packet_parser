@@ -1,0 +1,30 @@
+INTRODUCTION
+============
+
+I have created 2 classes and 1 main program to tackle this challenge.
+
+- solution.cpp is the C++ program creating the "parser" object and checks which mode is used. The following modes exist:
+    1. Print payload of all valid packages with urgent flag
+    2. Print whole packet of all packets with unknown flag
+    3. A pretty print out of all packets
+
+- parser.cpp is the class to handle the file reading and management of all packages. Also, it implements the functions
+for the different modes.
+
+- packet.cpp is the class for one single packet. I have chosen to use a bit field for the header data and a
+ std::vector<uint8_t> for the payload. The class checks if the data is valid and provides readback methods for
+ properties as urgent or unknown.
+
+ I tried to implement a CRC32 check but didn't succeed, though I tried out some generator polynomials. I assumed
+ polynomial 0xEDB88320 for the current solution and tried to make a checksum just over the payload. Maybe the polynomial
+ is wrong. I didn't want to use a huge dependency like boost just for the CRC check, so I copied a solution from Stack Overflow,
+ which might be wrong, too.
+ The program still works but leaves out the CRC check for now (packets with wrong CRC will be valid).
+
+USAGE
+=====
+
+make
+./solution MODE FILE
+
+where MODE is one of the 3 modes explained above and FILE is the path to the packets.txt

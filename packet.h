@@ -35,6 +35,9 @@ public:
   bool valid;
   bool urgent();
   bool unknown();
+  bool ack();
+  bool ack_rqst();
+  bool reset();
 };
 
 #endif //PACKET_PARSER_PACKET_H

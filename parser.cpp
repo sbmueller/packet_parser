@@ -61,11 +61,11 @@ parser::pretty_print(int packet) {
     std::cout << "******************************* PACKET NOT VALID **************************" << std::endl;
   }
   std::string props = "";
-  if((d_packets[packet].header.flags & 16) == 16) {props += "unknown, ";}
-  if((d_packets[packet].header.flags & 8) == 8) {props += "reset, ";}
-  if((d_packets[packet].header.flags & 4) == 4) {props += "urgent, ";}
-  if((d_packets[packet].header.flags & 2) == 2) {props += "ack rqst, ";}
-  if((d_packets[packet].header.flags & 1) == 1) {props += "ack, ";}
+  if(d_packets[packet].unknown()) {props += "unknown, ";}
+  if(d_packets[packet].reset()) {props += "reset, ";}
+  if(d_packets[packet].urgent()) {props += "urgent, ";}
+  if(d_packets[packet].ack_rqst()) {props += "ack rqst, ";}
+  if(d_packets[packet].ack()) {props += "ack, ";}
   if(props.size() > 0) { props = props.substr(0, props.size()-2);}
   std::cout << "Props  -| " << props << std::endl;
   std::cout << "        |----------------------------------------------------------------" << std::endl;
